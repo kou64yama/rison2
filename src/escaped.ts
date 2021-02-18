@@ -12,7 +12,7 @@ const ESCAPE_NO_REQUIRED = /^[-A-Za-z0-9~!*()_.',:@$/]*$/;
  *
  * @param str
  */
-export const escape = (str: string) => {
+const escape = (str: string) => {
   if (ESCAPE_NO_REQUIRED.test(str)) return str;
 
   return encodeURIComponent(str)
@@ -24,21 +24,34 @@ export const escape = (str: string) => {
     .replace(/%20/g, '+');
 };
 
-export const unescape = (str: string) =>
-  decodeURIComponent(str.replace(/\+/g, '%20'));
+const unescape = (str: string) => decodeURIComponent(str.replace(/\+/g, '%20'));
 
-export const RISON = {
+const RISON = {
   parse: (text: string): any => rison.RISON.parse(unescape(text)),
   stringify: (value: any): string => escape(rison.RISON.stringify(value)),
 };
 
-export const ORISON = {
+const ORISON = {
   parse: (text: string): any => rison.ORISON.parse(unescape(text)),
   stringify: (value: Record<string, any>): string =>
     escape(rison.ORISON.stringify(value)),
 };
 
-export const ARISON = {
+const ARISON = {
   parse: (text: string): any => rison.ARISON.parse(unescape(text)),
   stringify: (value: any[]): string => escape(rison.ARISON.stringify(value)),
+};
+
+const parse = RISON.parse;
+const stringify = RISON.stringify;
+
+export {
+  RISON as default,
+  RISON,
+  ORISON,
+  ARISON,
+  parse,
+  stringify,
+  escape,
+  unescape,
 };
