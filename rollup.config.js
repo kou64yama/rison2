@@ -26,7 +26,7 @@ export default {
           },
         ],
       ],
-      moduleId: 'rison',
+      moduleId: 'rison2',
     }),
   ],
 };
