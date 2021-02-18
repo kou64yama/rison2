@@ -2,3 +2,4 @@
 .log
 .husky
 coverage
+pnpm-lock.yaml
