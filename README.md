@@ -1,6 +1,7 @@
 # Rison2
 
 [![Node.js CI](https://github.com/kou64yama/rison2/workflows/Node.js%20CI/badge.svg?branch=main&event=push)](https://github.com/kou64yama/rison2/actions?query=workflow:%22Node.js+CI%22+branch:main+event:push)
+[![codecov](https://codecov.io/gh/kou64yama/rison2/branch/main/graph/badge.svg?token=0JNGZN3XYR)](https://codecov.io/gh/kou64yama/rison2)
 
 Rison2 is a parser/stringifier of
 [Rison](https://github.com/Nanonid/rison).
