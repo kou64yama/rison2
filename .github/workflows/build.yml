@@ -40,3 +40,11 @@ jobs:
       - uses: codecov/codecov-action@v1
         with:
           name: Coverage in Node.js ${{ matrix.node-version }}
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run FOSSA scan and update build data
+        uses: fossa-contrib/fossa-action@v1
+        with:
+          fossa-api-key: ${{ secrets.FOSSA_API_KEY }}
