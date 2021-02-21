@@ -19,9 +19,19 @@
     "bundle": "rollup -c",
     "minify": "terser -c -m -o dist/rison.min.js -- dist/rison.js"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kou64yama/rison2.git"
+  },
+  "keywords": [
+    "rison"
+  ],
   "author": "Yamada Koji <kou64yama@gmail.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kou64yama/rison2/issues"
+  },
+  "homepage": "https://github.com/kou64yama/rison2#readme",
   "browserslist": [
     "last 2 versions",
     "> 0.2%",
