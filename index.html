@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Rison2 Playground</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style>
+      html {
+        height: 100%;
+        font: 16px/24px 'Helvetica Neue', 'Arial', sans-serif;
+      }
+
+      body {
+        margin: 0;
+        height: 100%;
+        color: #3e3e3e;
+      }
+
+      .header {
+        background: #39f;
+        color: #fff;
+        padding: 1rem 2rem;
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 32px;
+      }
+
+      .main {
+        padding: 1rem 2rem;
+      }
+
+      .section {
+        max-width: 640px;
+        margin: 1rem auto;
+      }
+
+      .form {
+        font: 16px/24px 'Menlo', 'Roboto Mono', 'Consolas', monospace;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        padding: 0.75rem 1rem;
+        outline: none;
+      }
+
+      .form:focus {
+        border-color: #0074c2;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 116, 194, 0.6);
+        z-index: 1;
+      }
+
+      .input {
+        width: 100%;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      }
+
+      .select {
+        background-color: #ddd;
+      }
+
+      .error {
+        color: #c20000;
+        border-color: #c20000;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <header class="header">
+        Rison2 Playground
+      </header>
+      <main class="main">
+        <section class="section">
+          <div>
+            <label>Input</label>
+          </div>
+          <div style="display: flex; flex-flow: row norwap;">
+            <select class="form select" id="variant">
+              <option value="RISON">Rison</option>
+              <option value="ORISON">O-Rison</option>
+              <option value="ARISON">A-Rison</option>
+            </select>
+            <input class="form input" id="input" type="text" style="margin-left: -1px;">
+          </div>
+        </section>
+        <section class="section">
+          <div>
+            <label>JSON</label>
+          </div>
+          <div>
+            <textarea readonly class="form input" id="output" rows="10"></textarea>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://unpkg.com/rison2@latest/dist/rison.min.js"></script>
+    <script>
+      var variant = document.getElementById('variant');
+      var input = document.getElementById('input');
+      var output = document.getElementById('output');
+      var timeout = null;
+
+      function convert() {
+        history.replaceState({}, document.title, '#/' + variant.value + '/' + rison2.escape(input.value));
+
+        try {
+          var value = rison2[variant.value].parse(input.value);
+          output.value = JSON.stringify(value, null, 2);
+          output.className = "form input"
+        } catch (err) {
+          output.value = err;
+          output.className = "form input error"
+        }
+      }
+
+      variant.addEventListener('change', function() {
+        convert();
+      }, false);
+
+      input.addEventListener('keydown', function() {
+        clearTimeout(timeout);
+      }, false);
+
+      input.addEventListener('keyup', function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(convert, 500);
+      }, false);
+
+      try {
+        var fragments = location.hash.slice(1).split('/');
+        variant.value = fragments.length > 1 ? fragments[1] : 'RISON';
+        input.value = fragments.length > 2 ? rison2.unescape(fragments[2]) : '';
+        convert();
+      } catch (err) {
+      }
+    </script>
+  </body>
+</html>
