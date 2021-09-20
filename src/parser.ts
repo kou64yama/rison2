@@ -1,18 +1,18 @@
+import { Lexer } from './lexer';
 import {
-  NULL,
-  TRUE,
-  FALSE,
-  OBJECT_START,
   ARRAY_START,
-  OBJECT_ARRAY_END,
   COLON,
   COMMA,
+  FALSE,
+  NULL,
   NUMBER,
+  OBJECT_ARRAY_END,
+  OBJECT_START,
   STRING,
   Token,
   TokenKind,
+  TRUE,
 } from './token';
-import { Lexer } from './lexer';
 
 export class Parser {
   public constructor(private readonly lexer: Lexer) {}

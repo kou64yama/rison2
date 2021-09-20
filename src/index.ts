@@ -1,5 +1,5 @@
-import { RISON, ORISON, ARISON } from './rison';
 import * as escaped from './escaped';
+import { ARISON, ORISON, RISON } from './rison';
 
 const parse = RISON.parse;
 const stringify = RISON.stringify;
