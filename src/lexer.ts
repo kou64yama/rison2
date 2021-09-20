@@ -36,15 +36,16 @@ const rules = {
       }
     }
   },
-  string: <T extends TokenKind>(kind: T): Rule<T> => (source, pos) =>
-    source.startsWith(kind, pos) ? { kind, value: kind } : null,
-  regexp: <T extends TokenKind>(kind: T, reg: RegExp): Rule<T> => (
-    source,
-    pos,
-  ) => {
-    const match = reg.exec(source.slice(pos));
-    return match ? { kind, value: match[0] } : null;
-  },
+  string:
+    <T extends TokenKind>(kind: T): Rule<T> =>
+    (source, pos) =>
+      source.startsWith(kind, pos) ? { kind, value: kind } : null,
+  regexp:
+    <T extends TokenKind>(kind: T, reg: RegExp): Rule<T> =>
+    (source, pos) => {
+      const match = reg.exec(source.slice(pos));
+      return match ? { kind, value: match[0] } : null;
+    },
 };
 
 const RULES: Rule<TokenKind>[] = [
