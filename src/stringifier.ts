@@ -1,12 +1,12 @@
 import {
-  NULL,
-  TRUE,
-  FALSE,
-  OBJECT_START,
   ARRAY_START,
-  OBJECT_ARRAY_END,
   COLON,
   COMMA,
+  FALSE,
+  NULL,
+  OBJECT_ARRAY_END,
+  OBJECT_START,
+  TRUE,
 } from './token';
 
 const ID_REGEXP = /^[^0-9- '!:(),*@$][^ '!:(),*@$]*$/;

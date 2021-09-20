@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import * as exported from '../src/index';
 import * as rison from '../src/rison';
 import * as escaped from '../src/escaped';
