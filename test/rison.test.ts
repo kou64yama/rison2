@@ -88,7 +88,7 @@ describe('RISON.parse', () => {
 
 describe('RISON.stringify', () => {
   const flip = risonTests.map<[string, any]>((x) => [x[1], x[0]]);
-  const undefinedTests: any[] = [undefined, () => {}];
+  const undefinedTests: any[] = [undefined, () => null];
   const nullTests: any[] = [NaN, Infinity];
 
   it.each(flip)('returns %j when it given %j', (expected, input) => {
