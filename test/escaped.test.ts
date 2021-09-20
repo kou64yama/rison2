@@ -1,5 +1,3 @@
-/* eslint-env jest */
-
 import { RISON, ORISON, ARISON } from '../src/escaped';
 
 const risonTests: [any, string][] = [

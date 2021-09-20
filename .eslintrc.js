@@ -1,5 +1,10 @@
 module.exports = {
-  extends: ['standard', 'prettier', 'plugin:@typescript-eslint/recommended'],
+  extends: [
+    'standard',
+    'prettier',
+    'plugin:jest/recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
   parser: '@typescript-eslint/parser',
   rules: {
     'no-useless-constructor': 'off',
