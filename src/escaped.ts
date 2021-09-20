@@ -12,7 +12,7 @@ const ESCAPE_NO_REQUIRED = /^[-A-Za-z0-9~!*()_.',:@$/]*$/;
  *
  * @param str
  */
-const escape = (str: string) => {
+const escape = (str: string): string => {
   if (ESCAPE_NO_REQUIRED.test(str)) return str;
 
   return encodeURIComponent(str)
@@ -24,7 +24,8 @@ const escape = (str: string) => {
     .replace(/%20/g, '+');
 };
 
-const unescape = (str: string) => decodeURIComponent(str.replace(/\+/g, '%20'));
+const unescape = (str: string): string =>
+  decodeURIComponent(str.replace(/\+/g, '%20'));
 
 const RISON = {
   parse: (text: string): any => rison.RISON.parse(unescape(text)),
