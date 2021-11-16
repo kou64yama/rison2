@@ -7,7 +7,7 @@ test
 .editorconfig
 .eslintrc.js
 .npmignore
-.prettierrc.js
+prettier.config.js
 jest.config.ts
 lint-staged.config.js
 pnpm-lock.yaml
