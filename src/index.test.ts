@@ -1,12 +1,8 @@
-import * as exported from '../src/index';
-import * as rison from '../src/rison';
-import * as escaped from '../src/escaped';
+import * as escaped from './escaped';
+import * as exported from './index';
+import * as rison from './rison';
 
 describe('module', () => {
-  it('exports RISON as default', () => {
-    expect(exported.default).toBe(rison.RISON);
-  });
-
   it('exports RISON.parse as parse', () => {
     expect(exported.parse).toBe(rison.RISON.parse);
   });

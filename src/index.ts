@@ -6,14 +6,4 @@ const stringify = RISON.stringify;
 const escape = escaped.escape;
 const unescape = escaped.unescape;
 
-export {
-  RISON as default,
-  RISON,
-  ORISON,
-  ARISON,
-  parse,
-  stringify,
-  escape,
-  unescape,
-  escaped,
-};
+export { RISON, ORISON, ARISON, parse, stringify, escape, unescape, escaped };

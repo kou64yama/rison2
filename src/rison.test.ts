@@ -1,4 +1,4 @@
-import { RISON, ORISON, ARISON } from '../src/rison';
+import { ARISON, ORISON, RISON } from './rison';
 
 const risonTests: [any, string][] = [
   // null
