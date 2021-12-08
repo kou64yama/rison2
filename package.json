@@ -2,20 +2,32 @@
   "name": "rison2",
   "version": "0.2.2",
   "description": "Rison2 is a parser/stringifier of Rison",
-  "main": "es5/index.js",
-  "esnext": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "browser": "dist/rison.js",
+  "main": "lib/index.js",
+  "browser": "dist/rison2.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./lib/escaped": {
+      "import": "./lib/escaped.mjs",
+      "require": "./lib/escaped.js",
+      "default": "./lib/escaped.js"
+    }
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint --ignore-path .gitignore --ext .ts,.js .",
+    "lint": "eslint --ext .ts,.js .",
     "test": "jest",
-    "clean": "rimraf lib es5 dist",
-    "build": "npm run build:es6 && npm run build:es5 && npm run bundle && npm run minify",
-    "build:es6": "tsc -d --outDir lib src/index.ts",
-    "build:es5": "tsc -t es5 -m commonjs --outDir es5 src/index.ts",
+    "clean": "rimraf lib dist",
+    "build": "npm run bundle && npm run minify",
     "bundle": "rollup -c",
-    "minify": "terser -c -m -o dist/rison.min.js -- dist/rison.js"
+    "minify": "terser -c -m -o dist/rison2.min.js -- dist/rison2.js"
   },
   "repository": {
     "type": "git",
@@ -35,32 +47,34 @@
     "> 0.2%",
     "not dead"
   ],
+  "engines": {
+    "node": ">=12"
+  },
   "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-typescript": "^7.16.0",
     "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-typescript": "^8.2.5",
-    "@types/jest": "^27.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.31.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/jest": "^27.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^24.4.2",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jest": "^24.7.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "husky": "^7.0.2",
-    "jest": "^27.2.1",
-    "lint-staged": "^11.1.2",
-    "prettier": "^2.4.1",
+    "eslint-plugin-promise": "^5.2.0",
+    "husky": "^7.0.4",
+    "jest": "^27.4.3",
+    "lint-staged": "^11.2.6",
+    "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.56.3",
-    "terser": "^5.8.0",
-    "ts-jest": "^27.0.5",
-    "ts-node": "^10.2.1",
-    "tslib": "^2.3.1",
-    "typescript": "^4.4.3"
+    "rollup": "^2.60.2",
+    "terser": "^5.10.0",
+    "typescript": "<4.5.0"
   }
 }
