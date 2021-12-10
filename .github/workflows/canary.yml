@@ -1,25 +1,19 @@
-name: Node.js CI
+name: NPM Release (canary)
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 14.x
         uses: actions/setup-node@main
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14.x
+          registry-url: https://registry.npmjs.org
       - name: Cache ~/.pnpm-store
         uses: actions/cache@v2
         env:
@@ -34,9 +28,9 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
       - run: pnpm install
-      - run: npm run lint
-      - run: npm run test
+      - name: Bump version
+        run: npm --no-git-tag-version version "$(npm --no-git-tag-version version minor)-alpha.${{ github.run_number }}"
       - run: npm run build
-      - uses: codecov/codecov-action@v1
-        with:
-          name: Coverage in Node.js ${{ matrix.node-version }}
+      - run: npm publish --tag canary
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

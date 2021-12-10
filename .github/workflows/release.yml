@@ -1,4 +1,4 @@
-name: Node.js Package
+name: NPM Release
 
 on:
   release:
@@ -28,9 +28,7 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
       - run: pnpm install
-      - run: pnpm run lint
-      - run: pnpm run test
-      - run: pnpm run build
+      - run: npm run build
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
