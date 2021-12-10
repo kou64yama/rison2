@@ -16,5 +16,5 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
-  ignorePatterns: ['lib/**', 'es5/**', 'dist/**'],
+  ignorePatterns: ['lib/**', 'dist/**'],
 };
