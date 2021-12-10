@@ -1,4 +1,4 @@
-import { RISON, ORISON, ARISON } from '../src/escaped';
+import { ARISON, ORISON, RISON } from './escaped';
 
 const risonTests: [any, string][] = [
   ['hello', 'hello'],

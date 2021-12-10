@@ -1,0 +1,7 @@
+lockfileVersion: 5.3
+
+specifiers:
+  rison2: link:..
+
+dependencies:
+  rison2: link:..

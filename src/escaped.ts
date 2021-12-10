@@ -46,13 +46,4 @@ const ARISON = {
 const parse = RISON.parse;
 const stringify = RISON.stringify;
 
-export {
-  RISON as default,
-  RISON,
-  ORISON,
-  ARISON,
-  parse,
-  stringify,
-  escape,
-  unescape,
-};
+export { RISON, ORISON, ARISON, parse, stringify, escape, unescape };

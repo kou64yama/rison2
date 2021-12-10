@@ -27,10 +27,10 @@ interface.
 ```js
 import { RISON } from 'rison2';
 
-RISON.stringify({ message: 'こんにちは，世界' });
+console.info(RISON.stringify({ message: 'こんにちは，世界' }));
 // '(message:こんにちは，世界)'
 
-RISON.parse('(message:こんにちは，世界)');
+console.info(RISON.parse('(message:こんにちは，世界)'));
 // { message: 'こんにちは，世界' }
 ```
 
@@ -40,10 +40,10 @@ If you need percent encoding, import `rison2/lib/escaped` instead of
 ```js
 import { RISON } from 'rison2/lib/escaped';
 
-RISON.stringify({ kanji: '漢字' });
+console.info(RISON.stringify({ kanji: '漢字' }));
 // '(kanji:%E6%BC%A2%E5%AD%97)'
 
-RISON.parse('(kanji:%E6%BC%A2%E5%AD%97)');
+console.info(RISON.parse('(kanji:%E6%BC%A2%E5%AD%97)'));
 // { kanji: '漢字' }
 ```
 
