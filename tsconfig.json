@@ -1,8 +1,10 @@
 {
+  "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true
-  }
+    "moduleResolution": "Node"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [{ "path": "tsconfig.node.json" }]
 }
