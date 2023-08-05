@@ -1,7 +1,7 @@
 // @ts-check
 
-import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel';
-import nodeResolve from '@rollup/plugin-node-resolve';
+import { babel, getBabelOutputPlugin } from '@rollup/plugin-babel';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import { readFile } from 'node:fs/promises';
 
