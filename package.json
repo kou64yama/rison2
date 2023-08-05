@@ -2,19 +2,20 @@
   "name": "rison2",
   "version": "0.2.3",
   "description": "Rison2 is a parser/stringifier of Rison",
+  "type": "module",
   "main": "lib/index.js",
   "browser": "dist/rison2.js",
   "packageManager": "pnpm@8.6.11",
   "exports": {
     ".": {
-      "import": "./lib/index.mjs",
-      "require": "./lib/index.js",
-      "default": "./lib/index.js"
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs",
+      "default": "./lib/index.cjs"
     },
     "./lib/escaped": {
-      "import": "./lib/escaped.mjs",
-      "require": "./lib/escaped.js",
-      "default": "./lib/escaped.js"
+      "import": "./lib/escaped.js",
+      "require": "./lib/escaped.cjs",
+      "default": "./lib/escaped.cjs"
     }
   },
   "files": [
@@ -49,7 +50,7 @@
     "not dead"
   ],
   "engines": {
-    "node": ">=12"
+    "node": ">=16"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",

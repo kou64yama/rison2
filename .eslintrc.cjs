@@ -3,7 +3,7 @@
 /**
  * @type {import('eslint').Linter.Config}
  */
-module.exports = {
+const config = {
   extends: [
     'standard',
     'prettier',
@@ -18,3 +18,5 @@ module.exports = {
   },
   ignorePatterns: ['lib/**', 'dist/**'],
 };
+
+module.exports = config;

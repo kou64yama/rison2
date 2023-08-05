@@ -1,7 +1,10 @@
-lockfileVersion: 5.3
+lockfileVersion: '6.0'
 
-specifiers:
-  rison2: link:..
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
-  rison2: link:..
+  rison2:
+    specifier: link:..
+    version: link:..
