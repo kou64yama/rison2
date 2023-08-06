@@ -80,7 +80,7 @@ describe('RISON.parse', () => {
   });
 
   it.each(syntaxErrors)('throws SyntaxError when it given %j', (input) => {
-    expect(() => RISON.parse(input)).toThrowError(SyntaxError);
+    expect(() => RISON.parse(input)).toThrow(SyntaxError);
   });
 });
 
@@ -103,7 +103,7 @@ describe('RISON.stringify', () => {
 
   it('throws a TypeError when it given BigInt', () => {
     const bigint = BigInt('0');
-    expect(() => RISON.stringify(bigint)).toThrowError(TypeError);
+    expect(() => RISON.stringify(bigint)).toThrow(TypeError);
   });
 
   it('ignores undefined in the object', () => {
@@ -121,7 +121,7 @@ describe('ORISON.parse', () => {
   });
 
   it.each(syntaxErrors)('throws SyntaxError when it given %j', (input) => {
-    expect(() => ORISON.parse(input)).toThrowError(SyntaxError);
+    expect(() => ORISON.parse(input)).toThrow(SyntaxError);
   });
 });
 
@@ -138,7 +138,7 @@ describe('ARISON.parse', () => {
   });
 
   it.each(syntaxErrors)('throws SyntaxError when it given %j', (input) => {
-    expect(() => ARISON.parse(input)).toThrowError(SyntaxError);
+    expect(() => ARISON.parse(input)).toThrow(SyntaxError);
   });
 });
 
