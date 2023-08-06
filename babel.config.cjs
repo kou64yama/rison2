@@ -5,7 +5,12 @@
  */
 const options = {
   presets: [
-    ['@babel/preset-env', { targets: { node: 'current' } }],
+    [
+      '@babel/preset-env',
+      /** @type {import('@babel/preset-env').Options} */ ({
+        targets: { node: 'current' },
+      }),
+    ],
     '@babel/preset-typescript',
   ],
 };

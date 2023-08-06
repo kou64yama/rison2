@@ -29,11 +29,9 @@ export default async function () {
     presets: [
       [
         '@babel/preset-env',
-        {
-          targets: {
-            node: pkg.engines.node.match(/[0-9]+/)?.[0],
-          },
-        },
+        /** @type {import('@babel/preset-env').Options} */ ({
+          targets: { node: pkg.engines.node.match(/[0-9]+/)?.[0] },
+        }),
       ],
     ],
   });
@@ -41,10 +39,10 @@ export default async function () {
     presets: [
       [
         '@babel/preset-env',
-        {
+        /** @type {import('@babel/preset-env').Options} */ ({
           modules: 'umd',
           targets: { browsers: pkg.browserslist },
-        },
+        }),
       ],
     ],
     moduleId: 'rison2',
