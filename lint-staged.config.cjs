@@ -4,11 +4,8 @@
  * @type {import('lint-staged').Config}
  */
 const config = {
-  '**/*.ts': (filenames) => [
-    `prettier --write ${filenames.join(' ')}`,
-    `eslint --fix ${filenames.join(' ')}`,
-  ],
-  '**/*.{md,json}': (filenames) => [`prettier --write ${filenames.join(' ')}`],
-};
+  '**/*.{ts,js,cjs}': ['eslint --fix', 'prettier --write'],
+  '**/*.{md,json}': ['prettier --write']
+}
 
-module.exports = config;
+module.exports = config

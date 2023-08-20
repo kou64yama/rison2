@@ -1,13 +1,13 @@
-export const NULL = '!n';
-export const TRUE = '!t';
-export const FALSE = '!f';
-export const OBJECT_START = '(';
-export const ARRAY_START = '!(';
-export const OBJECT_ARRAY_END = ')';
-export const COLON = ':';
-export const COMMA = ',';
-export const STRING = 'string';
-export const NUMBER = 'number';
+export const NULL = '!n'
+export const TRUE = '!t'
+export const FALSE = '!f'
+export const OBJECT_START = '('
+export const ARRAY_START = '!('
+export const OBJECT_ARRAY_END = ')'
+export const COLON = ':'
+export const COMMA = ','
+export const STRING = 'string'
+export const NUMBER = 'number'
 
 export type TokenKind =
   | typeof NULL
@@ -19,9 +19,9 @@ export type TokenKind =
   | typeof COLON
   | typeof COMMA
   | typeof STRING
-  | typeof NUMBER;
+  | typeof NUMBER
 
 export interface Token<T extends TokenKind = TokenKind> {
-  kind: T;
-  value: string;
+  kind: T
+  value: string
 }

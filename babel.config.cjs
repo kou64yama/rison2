@@ -8,11 +8,11 @@ const options = {
     [
       '@babel/preset-env',
       /** @type {import('@babel/preset-env').Options} */ ({
-        targets: { node: 'current' },
-      }),
+        targets: { node: 'current' }
+      })
     ],
-    '@babel/preset-typescript',
-  ],
-};
+    '@babel/preset-typescript'
+  ]
+}
 
-module.exports = options;
+module.exports = options

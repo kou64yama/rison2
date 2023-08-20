@@ -1,4 +1,4 @@
-import { Lexer } from './lexer';
+import { type Lexer } from './lexer'
 import {
   ARRAY_START,
   COLON,
@@ -9,87 +9,92 @@ import {
   OBJECT_ARRAY_END,
   OBJECT_START,
   STRING,
-  Token,
-  TokenKind,
   TRUE,
-} from './token';
+  type Token,
+  type TokenKind
+} from './token'
 
 export class Parser {
-  public constructor(private readonly lexer: Lexer) {}
+  readonly #lexer: Lexer
 
-  public readAsAny(): any {
-    const val = this.asAny(this.nextToken());
-    if (this.lexer.position() < this.lexer.length()) {
-      throw this.lexer.syntaxError(this.nextToken());
-    }
-    return val;
+  public constructor(lexer: Lexer) {
+    this.#lexer = lexer
   }
 
-  private asAny(token: Token): any {
+  public readAsAny(): unknown {
+    const val = this.asAny(this.nextToken())
+    if (this.#lexer.position() < this.#lexer.length()) {
+      throw this.#lexer.syntaxError(this.nextToken())
+    }
+    return val
+  }
+
+  private asAny(token: Token): unknown {
     switch (token.kind) {
       case NULL:
-        return null;
+        return null
       case TRUE:
-        return true;
+        return true
       case FALSE:
-        return false;
+        return false
       case STRING:
-        return this.asString(token);
+        return this.asString(token)
       case NUMBER:
-        return Number(token.value);
+        return Number(token.value)
       case OBJECT_START:
-        return this.readAsObject();
+        return this.readAsObject()
       case ARRAY_START:
-        return this.readAsArray();
+        return this.readAsArray()
       default:
-        throw this.lexer.syntaxError(token);
+        throw this.#lexer.syntaxError(token)
     }
   }
 
   private asString(token: Token): string {
     return token.value[0] === "'"
-      ? token.value.replace(/!./g, (c) => c[1]).slice(1, -1)
-      : token.value;
+      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        token.value.replace(/!./g, (c) => c[1]!).slice(1, -1)
+      : token.value
   }
 
-  private readAsObject(): Record<string, any> {
-    const obj: Record<string, any> = {};
-    let token = this.nextToken();
+  private readAsObject(): Record<string, unknown> {
+    const obj: Record<string, unknown> = {}
+    let token = this.nextToken()
     while (token.kind !== OBJECT_ARRAY_END) {
-      const key = this.asString(token);
-      this.expectToken(COLON);
-      const val = this.asAny(this.nextToken());
-      obj[key] = val;
+      const key = this.asString(token)
+      this.expectToken(COLON)
+      const val = this.asAny(this.nextToken())
+      obj[key] = val
 
-      token = this.nextToken();
-      if (token.kind === OBJECT_ARRAY_END) break;
-      if (token.kind !== COMMA) throw this.lexer.syntaxError(token);
-      token = this.nextToken();
+      token = this.nextToken()
+      if (token.kind === OBJECT_ARRAY_END) break
+      if (token.kind !== COMMA) throw this.#lexer.syntaxError(token)
+      token = this.nextToken()
     }
-    return obj;
+    return obj
   }
 
-  private readAsArray(): any[] {
-    const arr: any[] = [];
-    let token = this.nextToken();
+  private readAsArray(): unknown[] {
+    const arr: unknown[] = []
+    let token = this.nextToken()
     while (token.kind !== OBJECT_ARRAY_END) {
-      arr.push(this.asAny(token));
-      token = this.nextToken();
-      if (token.kind === OBJECT_ARRAY_END) break;
-      if (token.kind !== COMMA) throw this.lexer.syntaxError(token);
-      token = this.nextToken();
+      arr.push(this.asAny(token))
+      token = this.nextToken()
+      if (token.kind === OBJECT_ARRAY_END) break
+      if (token.kind !== COMMA) throw this.#lexer.syntaxError(token)
+      token = this.nextToken()
     }
-    return arr;
+    return arr
   }
 
-  private expectToken<T extends TokenKind>(kind: T) {
-    const token = this.nextToken();
-    if (token.kind !== kind) throw this.lexer.syntaxError(token);
+  private expectToken<T extends TokenKind>(kind: T): void {
+    const token = this.nextToken()
+    if (token.kind !== kind) throw this.#lexer.syntaxError(token)
   }
 
   private nextToken(): Token {
-    const token = this.lexer.nextToken();
-    if (!token) throw new SyntaxError(`Unexpected end of Rison input`);
-    return token;
+    const token = this.#lexer.nextToken()
+    if (token == null) throw new SyntaxError('Unexpected end of Rison input')
+    return token
   }
 }

@@ -4,19 +4,22 @@
  * @type {import('eslint').Linter.Config}
  */
 const config = {
-  extends: [
-    'standard',
-    'prettier',
-    'plugin:jest/recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
+  extends: ['standard-with-typescript', 'prettier', 'plugin:jest/recommended'],
   parser: '@typescript-eslint/parser',
-  rules: {
-    'no-useless-constructor': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
+  parserOptions: {
+    project: ['./tsconfig.json', './tsconfig.node.json']
   },
-  ignorePatterns: ['lib/**', 'dist/**'],
-};
+  rules: {
+    'import/order': [
+      'error',
+      {
+        groups: [['builtin', 'external'], 'parent', ['sibling', 'index']],
+        'newlines-between': 'never',
+        alphabetize: { order: 'asc', caseInsensitive: true }
+      }
+    ]
+  },
+  ignorePatterns: ['lib', 'dist']
+}
 
-module.exports = config;
+module.exports = config

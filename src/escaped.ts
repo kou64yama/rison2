@@ -1,6 +1,8 @@
-import * as rison from './rison';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-const ESCAPE_NO_REQUIRED = /^[-A-Za-z0-9~!*()_.',:@$/]*$/;
+import * as rison from './rison'
+
+const ESCAPE_NO_REQUIRED = /^[-A-Za-z0-9~!*()_.',:@$/]*$/
 
 /**
  * this is like encodeURIComponent() but quotes fewer characters.
@@ -13,7 +15,7 @@ const ESCAPE_NO_REQUIRED = /^[-A-Za-z0-9~!*()_.',:@$/]*$/;
  * @param str
  */
 const escape = (str: string): string => {
-  if (ESCAPE_NO_REQUIRED.test(str)) return str;
+  if (ESCAPE_NO_REQUIRED.test(str)) return str
 
   return encodeURIComponent(str)
     .replace(/%2C/g, ',')
@@ -21,29 +23,29 @@ const escape = (str: string): string => {
     .replace(/%40/g, '@')
     .replace(/%24/g, '$')
     .replace(/%2F/g, '/')
-    .replace(/%20/g, '+');
-};
+    .replace(/%20/g, '+')
+}
 
 const unescape = (str: string): string =>
-  decodeURIComponent(str.replace(/\+/g, '%20'));
+  decodeURIComponent(str.replace(/\+/g, '%20'))
 
 const RISON = {
   parse: (text: string): any => rison.RISON.parse(unescape(text)),
-  stringify: (value: any): string => escape(rison.RISON.stringify(value)),
-};
+  stringify: (value: any): string => escape(rison.RISON.stringify(value))
+}
 
 const ORISON = {
   parse: (text: string): any => rison.ORISON.parse(unescape(text)),
   stringify: (value: Record<string, any>): string =>
-    escape(rison.ORISON.stringify(value)),
-};
+    escape(rison.ORISON.stringify(value))
+}
 
 const ARISON = {
   parse: (text: string): any => rison.ARISON.parse(unescape(text)),
-  stringify: (value: any[]): string => escape(rison.ARISON.stringify(value)),
-};
+  stringify: (value: any[]): string => escape(rison.ARISON.stringify(value))
+}
 
-const parse = RISON.parse;
-const stringify = RISON.stringify;
+const parse = RISON.parse
+const stringify = RISON.stringify
 
-export { RISON, ORISON, ARISON, parse, stringify, escape, unescape };
+export { ARISON, ORISON, RISON, escape, parse, stringify, unescape }

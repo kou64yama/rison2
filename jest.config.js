@@ -23,7 +23,7 @@ const config = {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['src/**/*'],
+  collectCoverageFrom: ['src/**/*']
 
   // The directory where Jest should output its coverage files
   // coverageDirectory: 'coverage',
@@ -194,6 +194,6 @@ const config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-};
+}
 
-export default config;
+export default config
