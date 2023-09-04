@@ -8,31 +8,31 @@ import {
   OBJECT_ARRAY_END,
   OBJECT_START,
   STRING,
-  Token,
-  TokenKind,
   TRUE,
-} from './token';
+  type Token,
+  type TokenKind
+} from './token'
 
 type Rule<T extends TokenKind> = (
   source: string,
-  pos: number,
-) => Token<T> | null;
+  pos: number
+) => Token<T> | null
 
 const rules = {
   quote: (): Rule<typeof STRING> => (source, pos) => {
-    if (!source.startsWith("'", pos)) return null;
+    if (!source.startsWith("'", pos)) return null
 
-    let i = pos;
+    let i = pos
     while (true) {
       if (source.length <= ++i) {
-        throw new SyntaxError(`Unexpected end of Rison input`);
+        throw new SyntaxError('Unexpected end of Rison input')
       }
       switch (source[i]) {
         case '!':
-          i++;
-          continue;
+          i++
+          continue
         case "'":
-          return { kind: STRING, value: source.slice(pos, i + 1) };
+          return { kind: STRING, value: source.slice(pos, i + 1) }
       }
     }
   },
@@ -43,12 +43,12 @@ const rules = {
   regexp:
     <T extends TokenKind>(kind: T, reg: RegExp): Rule<T> =>
     (source, pos) => {
-      const match = reg.exec(source.slice(pos));
-      return match ? { kind, value: match[0] } : null;
-    },
-};
+      const match = reg.exec(source.slice(pos))
+      return match != null ? { kind, value: match[0] } : null
+    }
+}
 
-const RULES: Rule<TokenKind>[] = [
+const RULES: Array<Rule<TokenKind>> = [
   rules.quote(),
   rules.string(OBJECT_START),
   rules.string(ARRAY_START),
@@ -59,44 +59,47 @@ const RULES: Rule<TokenKind>[] = [
   rules.string(COLON),
   rules.string(COMMA),
   rules.regexp(STRING, /^[^0-9- '!:(),*@$][^ '!:(),*@$]*/),
-  rules.regexp(NUMBER, /^-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/),
-];
+  rules.regexp(NUMBER, /^-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/)
+]
 
 export class Lexer {
-  private pos = 0;
+  #pos = 0
+  #source: string
 
-  public constructor(private source: string) {}
+  public constructor(source: string) {
+    this.#source = source
+  }
 
   public position(): number {
-    return this.pos;
+    return this.#pos
   }
 
   public length(): number {
-    return this.source.length;
+    return this.#source.length
   }
 
   public nextToken(): Token<TokenKind> | null {
-    if (this.pos >= this.source.length) return null;
+    if (this.#pos >= this.#source.length) return null
 
     for (const rule of RULES) {
-      const token = rule(this.source, this.pos);
+      const token = rule(this.#source, this.#pos)
       if (token !== null) {
-        this.pos += token.value.length;
-        return token;
+        this.#pos += token.value.length
+        return token
       }
     }
 
     throw new SyntaxError(
-      `Unexpected token ${this.source[this.pos]} in Rison at position ${
-        this.pos
-      }`,
-    );
+      `Unexpected token ${this.#source[this.#pos]} in Rison at position ${
+        this.#pos
+      }`
+    )
   }
 
   public syntaxError(token: Token): SyntaxError {
-    const pos = this.pos - token.value.length;
+    const pos = this.#pos - token.value.length
     return new SyntaxError(
-      `Unexpected token ${this.source[pos]} in Rison at position ${pos}`,
-    );
+      `Unexpected token ${this.#source[pos]} in Rison at position ${pos}`
+    )
   }
 }

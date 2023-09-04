@@ -6,7 +6,8 @@
 
 const config = {
   singleQuote: true,
-  trailingComma: 'all',
-};
+  trailingComma: 'none',
+  semi: false
+}
 
-module.exports = config;
+module.exports = config

@@ -1,52 +1,53 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 // @ts-check
 
-import { babel, getBabelOutputPlugin } from '@rollup/plugin-babel';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
-import { readFile } from 'node:fs/promises';
+import { babel, getBabelOutputPlugin } from '@rollup/plugin-babel'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
+import typescript from '@rollup/plugin-typescript'
+import { readFile } from 'node:fs/promises'
 
 /**
  * @returns {Promise<import('./package.json')>}
  */
 async function readPackageJson() {
-  const data = await readFile('./package.json', 'utf-8');
-  return JSON.parse(data);
+  const data = await readFile('./package.json', 'utf-8')
+  return JSON.parse(data)
 }
 
 /**
  * @returns {Promise<import('rollup').RollupOptions[]>}
  */
 export default async function () {
-  const pkg = await readPackageJson();
-  const input = 'src/index.ts';
+  const pkg = await readPackageJson()
+  const input = 'src/index.ts'
   const plugins = [
     nodeResolve(),
     babel({
-      babelHelpers: 'bundled',
-    }),
-  ];
+      babelHelpers: 'bundled'
+    })
+  ]
   const node = getBabelOutputPlugin({
     presets: [
       [
         '@babel/preset-env',
         /** @type {import('@babel/preset-env').Options} */ ({
-          targets: { node: pkg.engines.node.match(/[0-9]+/)?.[0] },
-        }),
-      ],
-    ],
-  });
+          targets: { node: pkg.engines.node.match(/[0-9]+/)?.[0] }
+        })
+      ]
+    ]
+  })
   const browser = getBabelOutputPlugin({
     presets: [
       [
         '@babel/preset-env',
         /** @type {import('@babel/preset-env').Options} */ ({
           modules: 'umd',
-          targets: { browsers: pkg.browserslist },
-        }),
-      ],
+          targets: { browsers: pkg.browserslist }
+        })
+      ]
     ],
-    moduleId: 'rison2',
-  });
+    moduleId: 'rison2'
+  })
 
   return [
     {
@@ -56,7 +57,7 @@ export default async function () {
         entryFileNames: '[name].js',
         format: 'esm',
         preserveModules: true,
-        sourcemap: true,
+        sourcemap: true
       },
       plugins: [
         ...plugins,
@@ -69,10 +70,10 @@ export default async function () {
             '**/*.test.ts',
             '**/*.spec.ts',
             '**/__tests__/**/*.ts',
-            '**/__mocks__/**/*.ts',
-          ],
-        }),
-      ],
+            '**/__mocks__/**/*.ts'
+          ]
+        })
+      ]
     },
     {
       input,
@@ -81,9 +82,9 @@ export default async function () {
         entryFileNames: '[name].cjs',
         format: 'cjs',
         preserveModules: true,
-        sourcemap: true,
+        sourcemap: true
       },
-      plugins: [...plugins, node, typescript()],
+      plugins: [...plugins, node, typescript()]
     },
     {
       input,
@@ -91,9 +92,9 @@ export default async function () {
         dir: 'dist',
         entryFileNames: 'rison2.js',
         format: 'esm',
-        sourcemap: true,
+        sourcemap: true
       },
-      plugins: [...plugins, browser, typescript()],
-    },
-  ];
+      plugins: [...plugins, browser, typescript()]
+    }
+  ]
 }
