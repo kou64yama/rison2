@@ -50,7 +50,7 @@
     "not dead"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
