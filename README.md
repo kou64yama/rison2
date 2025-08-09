@@ -1,6 +1,6 @@
 # Rison2
 
-[![Node.js CI](https://github.com/kou64yama/rison2/workflows/Node.js%20CI/badge.svg?branch=main&event=push)](https://github.com/kou64yama/rison2/actions?query=workflow:%22Node.js+CI%22+branch:main+event:push)
+[![Node.js CI](https://github.com/kou64yama/rison2/actions/workflows/build.yml/badge.svg)](https://github.com/kou64yama/rison2/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/kou64yama/rison2/branch/main/graph/badge.svg?token=0JNGZN3XYR)](https://codecov.io/gh/kou64yama/rison2)
 [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B21095%2Fgithub.com%2Fkou64yama%2Frison2.svg?type=shield)](https://app.fossa.com/projects/custom%2B21095%2Fgithub.com%2Fkou64yama%2Frison2?ref=badge_shield)
 
