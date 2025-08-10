@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 // @ts-check
 
 import { babel, getBabelOutputPlugin } from '@rollup/plugin-babel'
