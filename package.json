@@ -1,6 +1,6 @@
 {
   "name": "rison2",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Rison2 is a parser/stringifier of Rison",
   "type": "module",
   "main": "lib/index.js",
