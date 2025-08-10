@@ -6,7 +6,14 @@
 
 Related to #[issue number]
 
-<!-- Use "Closes #[issue number]" only if this PR fully resolves the issue -->
+<!--
+IMPORTANT: Do not use auto-closing keywords unless:
+1. This PR fully resolves the issue AND
+2. All Acceptance Criteria in the issue have been verified/checked off
+
+Auto-closing keywords to avoid: "Closes", "Close", "Closed", "Fixes", "Fix", "Fixed", "Resolves", "Resolve", "Resolved"
+Use these keywords only when the issue should be automatically closed upon merge.
+-->
 
 ## Type of Change
 
