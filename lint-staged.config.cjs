@@ -1,7 +1,7 @@
 // @ts-check
 
 /**
- * @type {import('lint-staged').Config}
+ * @type {import('lint-staged').Configuration}
  */
 const config = {
   '**/*.{ts,js,cjs,json}': ['biome format --write', 'biome lint --fix'],
