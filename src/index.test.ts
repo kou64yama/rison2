@@ -32,6 +32,6 @@ describe('module', () => {
   })
 
   it('exports escaped', () => {
-    expect(exported.escaped).toBe(escaped)
+    expect(exported.escaped).toStrictEqual(escaped)
   })
 })
