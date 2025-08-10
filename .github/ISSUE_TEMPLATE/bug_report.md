@@ -14,7 +14,7 @@ assignees: ''
 
 [Provide clear and concise steps to reproduce the bug. This should include:]
 
-1.  **Installation:** How to install the module (e.g., `npm install <module-name>`).
+1.  **Installation:** How to install the module (e.g., `npm install rison2`).
 2.  **Code Snippet:** A minimal code snippet that demonstrates the bug.
     ```javascript
     // Your code here
