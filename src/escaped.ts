@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import * as rison from './rison'
 
 const ESCAPE_NO_REQUIRED = /^[-A-Za-z0-9~!*()_.',:@$/]*$/
@@ -14,7 +12,7 @@ const ESCAPE_NO_REQUIRED = /^[-A-Za-z0-9~!*()_.',:@$/]*$/
  *
  * @param str
  */
-const escape = (str: string): string => {
+const _escape = (str: string): string => {
   if (ESCAPE_NO_REQUIRED.test(str)) return str
 
   return encodeURIComponent(str)
@@ -26,26 +24,40 @@ const escape = (str: string): string => {
     .replace(/%20/g, '+')
 }
 
-const unescape = (str: string): string =>
+const _unescape = (str: string): string =>
   decodeURIComponent(str.replace(/\+/g, '%20'))
 
 const RISON = {
-  parse: (text: string): any => rison.RISON.parse(unescape(text)),
-  stringify: (value: any): string => escape(rison.RISON.stringify(value))
+  // biome-ignore lint/suspicious/noExplicitAny: External API requires `any` or complex type inference is not feasible.
+  parse: (text: string): any => rison.RISON.parse(_unescape(text)),
+  // biome-ignore lint/suspicious/noExplicitAny: External API requires `any` or complex type inference is not feasible.
+  stringify: (value: any): string => _escape(rison.RISON.stringify(value))
 }
 
 const ORISON = {
-  parse: (text: string): any => rison.ORISON.parse(unescape(text)),
+  // biome-ignore lint/suspicious/noExplicitAny: External API requires `any` or complex type inference is not feasible.
+  parse: (text: string): any => rison.ORISON.parse(_unescape(text)),
+  // biome-ignore lint/suspicious/noExplicitAny: External API requires `any` or complex type inference is not feasible.
   stringify: (value: Record<string, any>): string =>
-    escape(rison.ORISON.stringify(value))
+    _escape(rison.ORISON.stringify(value))
 }
 
 const ARISON = {
-  parse: (text: string): any => rison.ARISON.parse(unescape(text)),
-  stringify: (value: any[]): string => escape(rison.ARISON.stringify(value))
+  // biome-ignore lint/suspicious/noExplicitAny: External API requires `any` or complex type inference is not feasible.
+  parse: (text: string): any => rison.ARISON.parse(_unescape(text)),
+  // biome-ignore lint/suspicious/noExplicitAny: External API requires `any` or complex type inference is not feasible.
+  stringify: (value: any[]): string => _escape(rison.ARISON.stringify(value))
 }
 
 const parse = RISON.parse
 const stringify = RISON.stringify
 
-export { ARISON, ORISON, RISON, escape, parse, stringify, unescape }
+export {
+  ARISON,
+  ORISON,
+  RISON,
+  _escape as escape,
+  parse,
+  stringify,
+  _unescape as unescape
+}

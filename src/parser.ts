@@ -1,4 +1,4 @@
-import { type Lexer } from './lexer'
+import type { Lexer } from './lexer'
 import {
   ARRAY_START,
   COLON,
@@ -52,8 +52,7 @@ export class Parser {
 
   private asString(token: Token): string {
     return token.value[0] === "'"
-      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        token.value.replace(/!./g, (c) => c[1]!).slice(1, -1)
+      ? token.value.replace(/!./g, (c) => c[1] as string).slice(1, -1)
       : token.value
   }
 
