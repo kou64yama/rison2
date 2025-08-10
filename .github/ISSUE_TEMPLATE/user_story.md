@@ -43,7 +43,8 @@ For this user story to be considered "ready" for implementation, the following c
 
 ## Acceptance Criteria
 
-## [Define what "done" looks like for this user story. How will we know it's successfully completed and meets expectations?]
+[Define what "done" looks like for this user story. Check off each criterion when completed.]
 
--
--
+- [ ] [First acceptance criterion]
+- [ ] [Second acceptance criterion]
+- [ ] [Third acceptance criterion]
