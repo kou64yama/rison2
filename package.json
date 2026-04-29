@@ -5,7 +5,7 @@
   "type": "module",
   "main": "lib/index.js",
   "browser": "dist/rison2.js",
-  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
+  "packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8",
   "exports": {
     ".": {
       "import": "./lib/index.js",
@@ -51,17 +51,17 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.1.4",
-    "@tsconfig/node20": "^20.1.6",
-    "@tsconfig/strictest": "^2.0.5",
+    "@biomejs/biome": "^2.4.13",
+    "@tsconfig/node20": "^20.1.9",
+    "@tsconfig/strictest": "^2.0.8",
     "@types/jest": "^30.0.0",
-    "esbuild": "^0.25.8",
+    "esbuild": "^0.28.0",
     "esbuild-jest": "^0.5.0",
     "husky": "^9.1.7",
-    "jest": "^30.0.5",
-    "lint-staged": "^16.1.5",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.2",
-    "unbuild": "^3.6.0"
+    "jest": "^30.3.0",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3",
+    "unbuild": "^3.6.1"
   }
 }
