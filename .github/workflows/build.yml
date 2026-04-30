@@ -27,6 +27,7 @@ jobs:
       - uses: codecov/codecov-action@v6
         with:
           name: Coverage in Node.js ${{ matrix.node-version }}
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   release:
     needs: test
