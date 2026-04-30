@@ -24,7 +24,7 @@ jobs:
       - run: npm run lint
       - run: npm run test
       - run: npm run build
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           name: Coverage in Node.js ${{ matrix.node-version }}
 
