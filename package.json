@@ -52,11 +52,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.13",
+    "@swc/core": "^1.15.32",
+    "@swc/jest": "^0.2.39",
     "@tsconfig/node20": "^20.1.9",
     "@tsconfig/strictest": "^2.0.8",
     "@types/jest": "^30.0.0",
     "esbuild": "^0.28.0",
-    "esbuild-jest": "^0.4.0",
     "husky": "^9.1.7",
     "jest": "^30.3.0",
     "lint-staged": "^16.4.0",
