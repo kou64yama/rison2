@@ -15,19 +15,19 @@ jobs:
       matrix:
         node-version: [20, 22, 24]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
       - run: npm ci
       - run: npm run lint
       - run: npm run test
       - run: npm run build
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           name: Coverage in Node.js ${{ matrix.node-version }}
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   release:
     needs: test
@@ -37,13 +37,12 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Use Node.js 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
-          cache: npm
       - run: npm ci
 
       - name: Bump version (canary)
