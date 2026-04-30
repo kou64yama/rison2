@@ -9,16 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
       - name: Use Node.js 20.x
-        uses: actions/setup-node@main
+        uses: actions/setup-node@v3
         with:
           node-version: 20.x
           registry-url: https://registry.npmjs.org
-          cache: pnpm
-      - run: pnpm install
-      - run: pnpm run build
-      - run: pnpm publish --no-git-check
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish
         if: ${{ github.event.release.prerelease == false }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
