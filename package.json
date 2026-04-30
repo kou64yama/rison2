@@ -23,7 +23,7 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "test": "jest",
