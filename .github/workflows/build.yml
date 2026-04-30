@@ -5,9 +5,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  release:
+    types: [published]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,9 +17,9 @@ jobs:
         node-version: [20.x, 22.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -25,6 +27,40 @@ jobs:
       - run: npm run lint
       - run: npm run test
       - run: npm run build
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v5
         with:
           name: Coverage in Node.js ${{ matrix.node-version }}
+
+  release:
+    needs: test
+    if: github.event_name == 'release' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+      - run: npm ci
+
+      - name: Bump version (canary)
+        if: github.event_name == 'push'
+        run: npm --no-git-tag-version version "$(npm --no-git-tag-version version minor)-alpha.${{ github.run_number }}"
+
+      - run: npm run build
+
+      - name: Publish (canary)
+        if: github.event_name == 'push'
+        run: npm publish --tag canary
+
+      - name: Publish (latest)
+        if: github.event_name == 'release' && github.event.release.prerelease == false
+        run: npm publish
+
+      - name: Publish (next)
+        if: github.event_name == 'release' && github.event.release.prerelease == true
+        run: npm publish --tag next
