@@ -38,10 +38,10 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 20
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org
           cache: npm
       - run: npm ci
@@ -56,10 +56,10 @@ jobs:
         if: github.event_name == 'push'
         run: npm publish --tag canary
 
-      - name: Publish (latest)
-        if: github.event_name == 'release' && github.event.release.prerelease == false
-        run: npm publish
-
       - name: Publish (next)
         if: github.event_name == 'release' && github.event.release.prerelease == true
         run: npm publish --tag next
+
+      - name: Publish (latest)
+        if: github.event_name == 'release' && github.event.release.prerelease == false
+        run: npm publish
