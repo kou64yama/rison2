@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 20.x
@@ -28,17 +31,11 @@ jobs:
       - name: Publish (canary)
         if: github.event_name == 'push'
         run: npm publish --tag canary
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish (latest)
         if: github.event_name == 'release' && github.event.release.prerelease == false
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish (next)
         if: github.event_name == 'release' && github.event.release.prerelease == true
         run: npm publish --tag next
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
