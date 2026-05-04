@@ -3,7 +3,8 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "types": ["vitest/globals"]
   },
   "include": ["src/**/*.ts"],
   "references": [{ "path": "tsconfig.node.json" }]
