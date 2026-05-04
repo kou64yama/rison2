@@ -9,27 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking Changes
 
-- **Removed CommonJS and UMD builds** (#64)
+- **Removed CommonJS and UMD builds** ([#64](https://github.com/kou64yama/rison2/pull/64))
   - Package now provides ES Modules (ESM) only
   - CommonJS (.cjs) and UMD builds are no longer available
   - Users must migrate to ES Modules. Node.js 20+ and modern browsers natively support ESM.
-- **Dropped support for Node.js 20** (#70)
+- **Dropped support for Node.js 20** ([#70](https://github.com/kou64yama/rison2/pull/70))
   - Minimum required Node.js version is now 22.x
   - Node.js 20 has reached end-of-life (2026-03-24)
 
 ### Added
 
-- Migrated from Jest to Vitest for test framework (#65)
+- Migrated from Jest to Vitest for test framework ([#65](https://github.com/kou64yama/rison2/pull/65))
   - Improved test performance with Vitest
   - Enhanced test coverage reporting with @vitest/coverage-v8
 
 ### Changed
 
-- Updated dependencies to latest versions (#66)
+- Updated dependencies to latest versions ([#66](https://github.com/kou64yama/rison2/pull/66))
   - vite: 5.4.21 → 8.0.10
   - @vitest/coverage-v8: 2.1.9 → 4.1.5
   - vitest: 2.1.9 → 4.1.5
-- Resolved TypeScript moduleResolution deprecation warning (#71)
+- Resolved TypeScript moduleResolution deprecation warning ([#71](https://github.com/kou64yama/rison2/pull/71))
   - Updated from deprecated 'Node' (node10) to 'Bundler' resolution strategy
 
 ## [0.3.0] - 2025-08-11
@@ -106,6 +106,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Release Links
 
-- [0.4.0]: https://github.com/kou64yama/rison2/compare/v0.3.0...v0.4.0
-- [0.3.0]: https://github.com/kou64yama/rison2/compare/v0.2.3...v0.3.0
-- [0.2.3]: https://github.com/kou64yama/rison2/releases/tag/v0.2.3
+- [0.4.0](https://github.com/kou64yama/rison2/compare/v0.3.0...v0.4.0)
+- [0.3.0](https://github.com/kou64yama/rison2/compare/v0.2.3...v0.3.0)
+- [0.2.3](https://github.com/kou64yama/rison2/releases/tag/v0.2.3)
