@@ -37,7 +37,7 @@ assignees: ''
 ## Environment
 
 - OS: [e.g., macOS, Windows, Linux]
-- Node.js Version: [e.g., 18.12.1, 20.0.0]
+- Node.js Version: [e.g., 22.0.0, 24.0.0]
 - Package Manager: [e.g., npm, yarn, pnpm]
 - Browser: [e.g., Chrome, Firefox, Safari] (if applicable)
 - Version: [e.g., 1.0.0] (version of the affected module)
