@@ -6,7 +6,7 @@ Thank you for your interest in contributing to Rison2! This guide will help you 
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (>= 20.0.0)
+- [Node.js](https://nodejs.org/) (>= 22.0.0)
 - [npm](https://www.npmjs.com/) (>= 10.0.0)
 
 We recommend using [mise](https://mise.jdx.dev/) or [nvm](https://github.com/nvm-sh/nvm) to manage your Node.js versions.
