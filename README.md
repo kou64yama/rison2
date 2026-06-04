@@ -34,11 +34,11 @@ console.info(RISON.parse('(message:こんにちは，世界)'))
 // { message: 'こんにちは，世界' }
 ```
 
-If you need percent encoding, import `rison2/lib/escaped` instead of
+If you need percent encoding, import `rison2/escaped` instead of
 `rison2`.
 
 ```js
-import { RISON } from 'rison2/lib/escaped'
+import { RISON } from 'rison2/escaped'
 
 console.info(RISON.stringify({ kanji: '漢字' }))
 // '(kanji:%E6%BC%A2%E5%AD%97)'
