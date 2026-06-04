@@ -2,6 +2,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "rison2": "link:.."
+    "rison2": "file:.."
   }
 }
