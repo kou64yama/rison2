@@ -37,7 +37,7 @@ We recommend using [mise](https://mise.jdx.dev/) or [nvm](https://github.com/nvm
   ```bash
   npm run format
   ```
-- **Testing**: We use [Jest](https://jestjs.io/) for tests.
+- **Testing**: We use [Vitest](https://vitest.dev/) for tests.
   ```bash
   npm run test
   ```
