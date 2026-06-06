@@ -59,7 +59,8 @@ const RULES: Array<Rule<TokenKind>> = [
   rules.string(FALSE),
   rules.string(COLON),
   rules.string(COMMA),
-  // Bare identifiers cannot start with a digit or `-` and exclude Rison delimiters.
+  // A bare identifier cannot start with a digit or `-`; all characters exclude
+  // the ASCII space, quote, and Rison reserved punctuation.
   rules.regexp(STRING, /^[^0-9- '!:(),*@$][^ '!:(),*@$]*/),
   // Numbers use a zero or non-zero-leading integer with optional fraction and exponent.
   rules.regexp(NUMBER, /^-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/)
