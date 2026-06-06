@@ -34,20 +34,16 @@ export class Stringifier {
   }
 
   public object(value: object): string {
-    return Object.entries(value).reduce<string>((prev, [key, value]) => {
-      const str = this.value(value)
-      if (str === undefined) return prev
-
-      const pair = `${this.string(key)}${COLON}${str}`
-      return prev.length > 0 ? `${prev}${COMMA}${pair}` : pair
-    }, '')
+    return Object.entries(value)
+      .flatMap(([key, value]) => {
+        const str = this.value(value)
+        return str === undefined ? [] : `${this.string(key)}${COLON}${str}`
+      })
+      .join(COMMA)
   }
 
   public array(value: unknown[]): string {
-    return value.reduce<string>((prev, value) => {
-      const str = this.value(value) ?? NULL
-      return prev.length > 0 ? `${prev}${COMMA}${str}` : str
-    }, '')
+    return value.map((value) => this.value(value) ?? NULL).join(COMMA)
   }
 
   public boolean(value: boolean): string {

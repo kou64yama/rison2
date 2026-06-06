@@ -106,12 +106,22 @@ describe('RISON.stringify', () => {
     expect(() => RISON.stringify(bigint)).toThrow(TypeError)
   })
 
-  it('ignores undefined in the object', () => {
-    expect(RISON.stringify({ foo: undefined })).toBe('()')
+  it('ignores unsupported values in objects while preserving order', () => {
+    expect(
+      RISON.stringify({
+        first: 1,
+        undefined,
+        function: () => null,
+        symbol: Symbol('symbol'),
+        last: 2
+      })
+    ).toBe('(first:1,last:2)')
   })
 
-  it('ignores undefined in the array', () => {
-    expect(RISON.stringify([undefined])).toBe('!(!n)')
+  it('replaces unsupported array values with null while preserving order', () => {
+    expect(
+      RISON.stringify([1, undefined, () => null, Symbol('symbol'), 2])
+    ).toBe('!(1,!n,!n,!n,2)')
   })
 })
 
