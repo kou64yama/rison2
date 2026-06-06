@@ -23,13 +23,11 @@ const NUMBER_REGEXP = /-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/y
  * Tokenizes a Rison source string while tracking the current position.
  */
 export class Lexer {
-  #currentTokenKind: TokenKind | null = null
   #currentTokenPosition = 0
   #currentTokenValue = ''
   #decodedQuotedString = ''
   #pos = 0
   #quotedStringHasEscape = false
-  #quotedStringToken: Token | null = null
   #source: string
 
   /**
@@ -53,13 +51,6 @@ export class Lexer {
    */
   public length(): number {
     return this.#source.length
-  }
-
-  /**
-   * @returns The kind of the most recently read token.
-   */
-  public currentTokenKind(): TokenKind | null {
-    return this.#currentTokenKind
   }
 
   /**
@@ -92,17 +83,6 @@ export class Lexer {
   }
 
   /**
-   * Reports whether a quoted string token contained an escape marker.
-   *
-   * @param token - A token returned by this lexer.
-   * @returns Whether the token is the most recently read quoted string and
-   * contains an escape marker.
-   */
-  public quotedStringHasEscape(token: Token): boolean {
-    return token === this.#quotedStringToken && this.#quotedStringHasEscape
-  }
-
-  /**
    * Reads the next token and advances the current position.
    *
    * @returns The next token, or `null` when the source has been consumed.
@@ -113,14 +93,11 @@ export class Lexer {
     const kind = this.nextTokenKind()
     if (kind === null) return null
 
-    const token = {
+    return {
       kind,
       value: this.#currentTokenValue,
       position: this.#currentTokenPosition
     }
-    this.#quotedStringToken =
-      kind === STRING && token.value[0] === "'" ? token : null
-    return token
   }
 
   /**
@@ -178,7 +155,6 @@ export class Lexer {
   }
 
   #createToken<T extends TokenKind>(kind: T, value: string = kind): T {
-    this.#currentTokenKind = kind
     this.#currentTokenPosition = this.#pos
     this.#currentTokenValue = value
     this.#quotedStringHasEscape = false

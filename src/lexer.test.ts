@@ -93,18 +93,6 @@ describe('Lexer.nextToken', () => {
     )
   })
 
-  it.each([
-    ["'hello world'", false],
-    ["'hello!! !'world'", true],
-    ['hello', false]
-  ])('records whether %j contains quoted escapes', (source, expected) => {
-    const lexer = new Lexer(source)
-    const token = lexer.nextToken()
-
-    if (token === null) throw new Error('Expected a token')
-    expect(lexer.quotedStringHasEscape(token)).toBe(expected)
-  })
-
   it('tracks positions across every fixed-token branch', () => {
     const lexer = new Lexer('():,!(!n!t!f')
 
@@ -137,7 +125,6 @@ describe('Lexer.nextTokenKind', () => {
     const lexer = new Lexer("!('hello world',!t)")
 
     expect(lexer.nextTokenKind()).toBe(ARRAY_START)
-    expect(lexer.currentTokenKind()).toBe(ARRAY_START)
     expect(lexer.currentTokenValue()).toBe('!(')
     expect(lexer.currentTokenPosition()).toBe(0)
     expect(lexer.nextTokenKind()).toBe(STRING)
