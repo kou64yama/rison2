@@ -83,14 +83,14 @@ export class Lexer {
   }
 
   /**
-   * @returns The zero-based offset of the next unread character.
+   * @returns The zero-based offset of the next unread UTF-16 code unit.
    */
   public position(): number {
     return this.#pos
   }
 
   /**
-   * @returns The number of characters in the source string.
+   * @returns The source string's length in UTF-16 code units.
    */
   public length(): number {
     return this.#source.length
