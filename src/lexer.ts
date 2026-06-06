@@ -33,19 +33,25 @@ const rules = {
           i++
           continue
         case "'":
-          return { kind: STRING, value: source.slice(pos, i + 1) }
+          return {
+            kind: STRING,
+            value: source.slice(pos, i + 1),
+            position: pos
+          }
       }
     }
   },
   string:
     <T extends TokenKind>(kind: T): Rule<T> =>
     (source, pos) =>
-      source.startsWith(kind, pos) ? { kind, value: kind } : null,
+      source.startsWith(kind, pos)
+        ? { kind, value: kind, position: pos }
+        : null,
   regexp:
     <T extends TokenKind>(kind: T, reg: RegExp): Rule<T> =>
     (source, pos) => {
       const match = reg.exec(source.slice(pos))
-      return match != null ? { kind, value: match[0] } : null
+      return match != null ? { kind, value: match[0], position: pos } : null
     }
 }
 
@@ -128,9 +134,10 @@ export class Lexer {
    * @returns A syntax error containing the token and its source position.
    */
   public syntaxError(token: Token): SyntaxError {
-    const pos = this.#pos - token.value.length
     return new SyntaxError(
-      `Unexpected token ${this.#source[pos]} in Rison at position ${pos}`
+      `Unexpected token ${this.#source[token.position]} in Rison at position ${
+        token.position
+      }`
     )
   }
 }
