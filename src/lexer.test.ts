@@ -1,4 +1,25 @@
 import { Lexer } from './lexer'
+import { COMMA, NUMBER, OBJECT_ARRAY_END, OBJECT_START, STRING } from './token'
+
+describe('Lexer.nextToken', () => {
+  it('matches regular expressions at the current position after failures', () => {
+    const lexer = new Lexer('(42,field)')
+
+    expect([
+      lexer.nextToken(),
+      lexer.nextToken(),
+      lexer.nextToken(),
+      lexer.nextToken(),
+      lexer.nextToken()
+    ]).toStrictEqual([
+      { kind: OBJECT_START, value: '(', position: 0 },
+      { kind: NUMBER, value: '42', position: 1 },
+      { kind: COMMA, value: ',', position: 3 },
+      { kind: STRING, value: 'field', position: 4 },
+      { kind: OBJECT_ARRAY_END, value: ')', position: 9 }
+    ])
+  })
+})
 
 describe('Lexer.syntaxError', () => {
   it.each([
