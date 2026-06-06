@@ -132,8 +132,14 @@ class BaselineStringifier extends Stringifier {
   }
 }
 
-const collection = Array.from({ length: 5_000 }, (_, index) =>
+const arrayCollection = Array.from({ length: 5_000 }, (_, index) =>
   index % 3 === 0 ? undefined : index
+)
+const objectCollection = Object.fromEntries(
+  Array.from({ length: 5_000 }, (_, index) => [
+    `key${index}`,
+    index % 3 === 0 ? undefined : index
+  ])
 )
 const benchOptions = { time: 1_500, warmupTime: 1_000 }
 
@@ -143,8 +149,11 @@ function readMiddle(value: string): number {
 
 const baselineStringifier = new BaselineStringifier()
 const stringifier = new Stringifier()
-expect(stringifier.array(collection)).toBe(
-  baselineStringifier.array(collection)
+expect(stringifier.array(arrayCollection)).toBe(
+  baselineStringifier.array(arrayCollection)
+)
+expect(stringifier.object(objectCollection)).toBe(
+  baselineStringifier.object(objectCollection)
 )
 
 for (const size of [100, 1_000, 10_000]) {
@@ -170,12 +179,30 @@ for (const size of [100, 1_000, 10_000]) {
   })
 }
 
-describe('Stringifier', () => {
+describe('Stringifier array', () => {
   bench(
     'reduce baseline',
-    () => readMiddle(baselineStringifier.array(collection)),
+    () => readMiddle(baselineStringifier.array(arrayCollection)),
     benchOptions
   )
 
-  bench('join', () => readMiddle(stringifier.array(collection)), benchOptions)
+  bench(
+    'join',
+    () => readMiddle(stringifier.array(arrayCollection)),
+    benchOptions
+  )
+})
+
+describe('Stringifier object', () => {
+  bench(
+    'reduce baseline',
+    () => readMiddle(baselineStringifier.object(objectCollection)),
+    benchOptions
+  )
+
+  bench(
+    'join',
+    () => readMiddle(stringifier.object(objectCollection)),
+    benchOptions
+  )
 })
