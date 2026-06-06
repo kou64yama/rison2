@@ -14,13 +14,28 @@ import {
   type TokenKind
 } from './token'
 
+/**
+ * Parses tokens from a lexer into JavaScript values.
+ */
 export class Parser {
   readonly #lexer: Lexer
 
+  /**
+   * Creates a parser backed by a lexer.
+   *
+   * @param lexer - The lexer that provides Rison tokens.
+   */
   public constructor(lexer: Lexer) {
     this.#lexer = lexer
   }
 
+  /**
+   * Parses one complete Rison value.
+   *
+   * @returns The JavaScript value represented by the Rison input.
+   * @throws {SyntaxError} If the input is empty, malformed, or contains tokens
+   * after the parsed value.
+   */
   public readAsAny(): unknown {
     const val = this.asAny(this.nextToken())
     if (this.#lexer.position() < this.#lexer.length()) {
@@ -51,6 +66,7 @@ export class Parser {
   }
 
   private asString(token: Token): string {
+    // Remove Rison's escape marker: `!!` represents `!`, and `!'` represents `'`.
     return token.value[0] === "'"
       ? token.value.replace(/!./g, (c) => c[1] as string).slice(1, -1)
       : token.value
