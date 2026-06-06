@@ -10,7 +10,6 @@ import {
   OBJECT_START,
   STRING,
   TRUE,
-  type Token,
   type TokenKind
 } from './token'
 
@@ -39,13 +38,14 @@ export class Parser {
   public readAsAny(): unknown {
     const val = this.asAny(this.nextToken())
     if (this.#lexer.position() < this.#lexer.length()) {
-      throw this.#lexer.syntaxError(this.nextToken())
+      this.nextToken()
+      throw this.#lexer.currentTokenSyntaxError()
     }
     return val
   }
 
-  private asAny(token: Token): unknown {
-    switch (token.kind) {
+  private asAny(kind: TokenKind): unknown {
+    switch (kind) {
       case NULL:
         return null
       case TRUE:
@@ -53,63 +53,66 @@ export class Parser {
       case FALSE:
         return false
       case STRING:
-        return this.asString(token)
+        return this.asString()
       case NUMBER:
-        return Number(token.value)
+        return Number(this.#lexer.currentTokenValue())
       case OBJECT_START:
         return this.readAsObject()
       case ARRAY_START:
         return this.readAsArray()
       default:
-        throw this.#lexer.syntaxError(token)
+        throw this.#lexer.currentTokenSyntaxError()
     }
   }
 
-  private asString(token: Token): string {
-    // Remove Rison's escape marker: `!!` represents `!`, and `!'` represents `'`.
-    return token.value[0] === "'"
-      ? token.value.replace(/!./g, (c) => c[1] as string).slice(1, -1)
-      : token.value
+  private asString(): string {
+    const value = this.#lexer.currentTokenValue()
+    if (value[0] !== "'") return value
+    if (!this.#lexer.currentQuotedStringHasEscape()) {
+      return value.slice(1, -1)
+    }
+    return this.#lexer.currentDecodedQuotedString()
   }
 
   private readAsObject(): Record<string, unknown> {
     const obj: Record<string, unknown> = {}
-    let token = this.nextToken()
-    while (token.kind !== OBJECT_ARRAY_END) {
-      const key = this.asString(token)
+    let kind = this.nextToken()
+    while (kind !== OBJECT_ARRAY_END) {
+      const key = this.asString()
       this.expectToken(COLON)
       const val = this.asAny(this.nextToken())
       obj[key] = val
 
-      token = this.nextToken()
-      if (token.kind === OBJECT_ARRAY_END) break
-      if (token.kind !== COMMA) throw this.#lexer.syntaxError(token)
-      token = this.nextToken()
+      kind = this.nextToken()
+      if (kind === OBJECT_ARRAY_END) break
+      if (kind !== COMMA) throw this.#lexer.currentTokenSyntaxError()
+      kind = this.nextToken()
     }
     return obj
   }
 
   private readAsArray(): unknown[] {
     const arr: unknown[] = []
-    let token = this.nextToken()
-    while (token.kind !== OBJECT_ARRAY_END) {
-      arr.push(this.asAny(token))
-      token = this.nextToken()
-      if (token.kind === OBJECT_ARRAY_END) break
-      if (token.kind !== COMMA) throw this.#lexer.syntaxError(token)
-      token = this.nextToken()
+    let kind = this.nextToken()
+    while (kind !== OBJECT_ARRAY_END) {
+      arr.push(this.asAny(kind))
+      kind = this.nextToken()
+      if (kind === OBJECT_ARRAY_END) break
+      if (kind !== COMMA) throw this.#lexer.currentTokenSyntaxError()
+      kind = this.nextToken()
     }
     return arr
   }
 
   private expectToken<T extends TokenKind>(kind: T): void {
-    const token = this.nextToken()
-    if (token.kind !== kind) throw this.#lexer.syntaxError(token)
+    if (this.nextToken() !== kind) {
+      throw this.#lexer.currentTokenSyntaxError()
+    }
   }
 
-  private nextToken(): Token {
-    const token = this.#lexer.nextToken()
-    if (token == null) throw new SyntaxError('Unexpected end of Rison input')
-    return token
+  private nextToken(): TokenKind {
+    const kind = this.#lexer.nextTokenKind()
+    if (kind === null) throw new SyntaxError('Unexpected end of Rison input')
+    return kind
   }
 }

@@ -85,7 +85,8 @@ describe('Lexer.nextToken', () => {
   it.each([
     "'",
     "'escaped!'",
-    "'trailing!"
+    "'trailing!",
+    "'こんにちは!"
   ])('preserves unterminated quote errors for %j', (source) => {
     expect(() => new Lexer(source).nextToken()).toThrowError(
       'Unexpected end of Rison input'
@@ -116,6 +117,34 @@ describe('Lexer.nextToken', () => {
       { kind: FALSE, value: '!f', position: 10 },
       null
     ])
+  })
+})
+
+describe('Lexer.nextTokenKind', () => {
+  it('updates current token state without changing nextToken output', () => {
+    const lexer = new Lexer("!('hello world',!t)")
+
+    expect(lexer.nextTokenKind()).toBe(ARRAY_START)
+    expect(lexer.currentTokenValue()).toBe('!(')
+    expect(lexer.currentTokenPosition()).toBe(0)
+    expect(lexer.nextTokenKind()).toBe(STRING)
+    expect(lexer.currentTokenValue()).toBe("'hello world'")
+    expect(lexer.currentTokenPosition()).toBe(2)
+    expect(lexer.currentQuotedStringHasEscape()).toBe(false)
+    expect(lexer.nextToken()).toStrictEqual({
+      kind: COMMA,
+      value: ',',
+      position: 15
+    })
+  })
+
+  it('retains raw and decoded values for escaped quoted strings', () => {
+    const lexer = new Lexer("'hello!! !'world'")
+
+    expect(lexer.nextTokenKind()).toBe(STRING)
+    expect(lexer.currentTokenValue()).toBe("'hello!! !'world'")
+    expect(lexer.currentQuotedStringHasEscape()).toBe(true)
+    expect(lexer.currentDecodedQuotedString()).toBe("hello! 'world")
   })
 })
 

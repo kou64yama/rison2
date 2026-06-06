@@ -96,6 +96,14 @@ describe('RISON.parse', () => {
       expect(error).toHaveProperty('message', message)
     }
   })
+
+  it.each([
+    ["'hello world'", 'hello world'],
+    ["'!! !' !! !''", "! ' ! '"],
+    ["'こんにちは!!世界!'終わり'", "こんにちは!世界'終わり"]
+  ])('decodes quoted string %j as %j', (input, expected) => {
+    expect(RISON.parse(input)).toBe(expected)
+  })
 })
 
 describe('RISON.stringify', () => {
