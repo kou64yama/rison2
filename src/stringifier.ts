@@ -34,12 +34,14 @@ export class Stringifier {
   }
 
   public object(value: object): string {
-    return Object.entries(value)
-      .flatMap(([key, value]) => {
-        const str = this.value(value)
-        return str === undefined ? [] : `${this.string(key)}${COLON}${str}`
-      })
-      .join(COMMA)
+    const pairs: string[] = []
+    for (const [key, entry] of Object.entries(value)) {
+      const str = this.value(entry)
+      if (str !== undefined) {
+        pairs.push(`${this.string(key)}${COLON}${str}`)
+      }
+    }
+    return pairs.join(COMMA)
   }
 
   public array(value: unknown[]): string {
