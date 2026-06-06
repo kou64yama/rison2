@@ -78,6 +78,37 @@ const benchmarkFixtures = [
   return { ...fixture, source: rison2Source }
 })
 
+const parseFixtures = [
+  { name: 'bare string', source: 'foo', value: 'foo' },
+  { name: 'number', source: '123', value: 123 },
+  { name: 'quoted string', source: "'hello world'", value: 'hello world' },
+  { name: 'true', source: '!t', value: true },
+  { name: 'null', source: '!n', value: null },
+  {
+    name: 'object',
+    source: '(a:1,b:foo)',
+    value: { a: 1, b: 'foo' }
+  },
+  {
+    name: 'array',
+    source: '!(foo,123,!t)',
+    value: ['foo', 123, true]
+  }
+]
+
+for (const fixture of parseFixtures) {
+  deepStrictEqual(
+    RISON.parse(fixture.source),
+    fixture.value,
+    `rison2 should parse ${fixture.name}`
+  )
+  deepStrictEqual(
+    rison.decode(fixture.source),
+    fixture.value,
+    `rison should parse ${fixture.name}`
+  )
+}
+
 describe.each(benchmarkFixtures)('RISON stringify: $name', (fixture) => {
   bench(
     'rison2',
@@ -96,6 +127,11 @@ describe.each(benchmarkFixtures)('RISON stringify: $name', (fixture) => {
 })
 
 describe.each(benchmarkFixtures)('RISON parse: $name', (fixture) => {
+  bench('rison2', () => RISON.parse(fixture.source), BENCHMARK_OPTIONS)
+  bench('rison', () => rison.decode(fixture.source), BENCHMARK_OPTIONS)
+})
+
+describe.each(parseFixtures)('RISON parse: $name', (fixture) => {
   bench('rison2', () => RISON.parse(fixture.source), BENCHMARK_OPTIONS)
   bench('rison', () => rison.decode(fixture.source), BENCHMARK_OPTIONS)
 })
