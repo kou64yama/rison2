@@ -47,12 +47,18 @@ const rules = {
       source.startsWith(kind, pos)
         ? { kind, value: kind, position: pos }
         : null,
-  regexp:
-    <T extends TokenKind>(kind: T, reg: RegExp): Rule<T> =>
-    (source, pos) => {
-      const match = reg.exec(source.slice(pos))
+  regexp: <T extends TokenKind>(kind: T, reg: RegExp): Rule<T> => {
+    const sticky = new RegExp(
+      reg.source,
+      reg.sticky ? reg.flags : `${reg.flags}y`
+    )
+
+    return (source, pos) => {
+      sticky.lastIndex = pos
+      const match = sticky.exec(source)
       return match != null ? { kind, value: match[0], position: pos } : null
     }
+  }
 }
 
 const RULES: Array<Rule<TokenKind>> = [
@@ -67,9 +73,9 @@ const RULES: Array<Rule<TokenKind>> = [
   rules.string(COMMA),
   // A bare identifier cannot start with a digit or `-`; all characters exclude
   // the ASCII space, quote, and Rison reserved punctuation.
-  rules.regexp(STRING, /^[^0-9- '!:(),*@$][^ '!:(),*@$]*/),
+  rules.regexp(STRING, /[^0-9- '!:(),*@$][^ '!:(),*@$]*/),
   // Numbers use a zero or non-zero-leading integer with optional fraction and exponent.
-  rules.regexp(NUMBER, /^-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/)
+  rules.regexp(NUMBER, /-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/)
 ]
 
 /**

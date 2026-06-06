@@ -54,13 +54,13 @@ export class Stringifier {
    * @returns The comma-separated Rison key-value pairs.
    */
   public object(value: object): string {
-    return Object.entries(value).reduce<string>((prev, [key, value]) => {
-      const str = this.value(value)
-      if (str === undefined) return prev
-
-      const pair = `${this.string(key)}${COLON}${str}`
-      return prev.length > 0 ? `${prev}${COMMA}${pair}` : pair
-    }, '')
+    const pairs: string[] = []
+    for (const [key, entryValue] of Object.entries(value)) {
+      const str = this.value(entryValue)
+      if (str === undefined) continue
+      pairs.push(`${this.string(key)}${COLON}${str}`)
+    }
+    return pairs.join(COMMA)
   }
 
   /**
@@ -71,10 +71,12 @@ export class Stringifier {
    * @returns The comma-separated Rison values.
    */
   public array(value: unknown[]): string {
-    return value.reduce<string>((prev, value) => {
-      const str = this.value(value) ?? NULL
-      return prev.length > 0 ? `${prev}${COMMA}${str}` : str
-    }, '')
+    const values: string[] = []
+    for (let i = 0; i < value.length; i++) {
+      if (!(i in value)) continue
+      values.push(this.value(value[i]) ?? NULL)
+    }
+    return values.join(COMMA)
   }
 
   /**

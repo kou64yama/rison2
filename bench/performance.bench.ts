@@ -1,6 +1,7 @@
 import { bench, describe } from 'vitest'
 
 import { Lexer } from '../src/lexer'
+import { Stringifier } from '../src/stringifier'
 
 const BENCHMARK_OPTIONS = {
   time: 100,
@@ -98,4 +99,32 @@ describe('Lexer token matching', () => {
       BENCHMARK_OPTIONS
     )
   }
+})
+
+const stringifier = new Stringifier()
+const collectionSize = 5_000
+const largeArray = Array.from({ length: collectionSize }, (_, index) => ({
+  id: `item${index}`,
+  count: index,
+  active: index % 2 === 0
+}))
+const largeObject = Object.fromEntries(
+  Array.from({ length: collectionSize }, (_, index) => [
+    `field${index}`,
+    index % 10 === 0 ? undefined : `value${index}`
+  ])
+)
+
+describe('Stringifier collection joining', () => {
+  bench(
+    `array: ${collectionSize} elements`,
+    () => stringifier.array(largeArray),
+    BENCHMARK_OPTIONS
+  )
+
+  bench(
+    `object: ${collectionSize} properties`,
+    () => stringifier.object(largeObject),
+    BENCHMARK_OPTIONS
+  )
 })
