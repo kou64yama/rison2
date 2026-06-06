@@ -80,14 +80,12 @@ const benchmarkFixtures = [
   return { ...fixture, source: rison2Source }
 })
 
-for (const fixture of benchmarkFixtures) {
-  describe(`RISON stringify: ${fixture.name}`, () => {
-    bench('rison2', () => RISON.stringify(fixture.value), BENCHMARK_OPTIONS)
-    bench('rison', () => rison.encode(fixture.value), BENCHMARK_OPTIONS)
-  })
+describe.each(benchmarkFixtures)('RISON stringify: $name', (fixture) => {
+  bench('rison2', () => RISON.stringify(fixture.value), BENCHMARK_OPTIONS)
+  bench('rison', () => rison.encode(fixture.value), BENCHMARK_OPTIONS)
+})
 
-  describe(`RISON parse: ${fixture.name}`, () => {
-    bench('rison2', () => RISON.parse(fixture.source), BENCHMARK_OPTIONS)
-    bench('rison', () => rison.decode(fixture.source), BENCHMARK_OPTIONS)
-  })
-}
+describe.each(benchmarkFixtures)('RISON parse: $name', (fixture) => {
+  bench('rison2', () => RISON.parse(fixture.source), BENCHMARK_OPTIONS)
+  bench('rison', () => rison.decode(fixture.source), BENCHMARK_OPTIONS)
+})
