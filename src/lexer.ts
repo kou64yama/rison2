@@ -43,7 +43,8 @@ const rules = {
   regexp:
     <T extends TokenKind>(kind: T, reg: RegExp): Rule<T> =>
     (source, pos) => {
-      const match = reg.exec(source.slice(pos))
+      reg.lastIndex = pos
+      const match = reg.exec(source)
       return match != null ? { kind, value: match[0] } : null
     }
 }
@@ -58,8 +59,8 @@ const RULES: Array<Rule<TokenKind>> = [
   rules.string(FALSE),
   rules.string(COLON),
   rules.string(COMMA),
-  rules.regexp(STRING, /^[^0-9- '!:(),*@$][^ '!:(),*@$]*/),
-  rules.regexp(NUMBER, /^-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/)
+  rules.regexp(STRING, /[^0-9- '!:(),*@$][^ '!:(),*@$]*/y),
+  rules.regexp(NUMBER, /-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/y)
 ]
 
 export class Lexer {
