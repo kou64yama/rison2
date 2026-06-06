@@ -1,16 +1,23 @@
 import * as rison from './rison'
 
+// These URI characters and Rison punctuation need no percent-encoding.
 const ESCAPE_NO_REQUIRED = /^[-A-Za-z0-9~!*()_.',:@$/]*$/
 
 /**
- * this is like encodeURIComponent() but quotes fewer characters.
+ * Escapes Rison text for URLs while preserving Rison-safe punctuation.
+ *
+ * This uses `encodeURIComponent`, then restores selected punctuation and
+ * encodes spaces as `+`.
  *
  * See https://github.com/Nanonid/rison/blob/e64af6c096fd30950ec32cfd48526ca6ee21649d/js/rison.js#L107-L118
  *
  * This function is licensed under the MIT license found in the
  * https://github.com/Nanonid/rison/blob/e64af6c096fd30950ec32cfd48526ca6ee21649d/LICENSE.md.
  *
- * @param str
+ * @param str - The Rison text to escape.
+ * @returns The URL-escaped Rison text.
+ * @example
+ * _escape('hello world') // 'hello+world'
  */
 const _escape = (str: string): string => {
   if (ESCAPE_NO_REQUIRED.test(str)) return str
@@ -24,6 +31,14 @@ const _escape = (str: string): string => {
     .replace(/%20/g, '+')
 }
 
+/**
+ * Decodes URL-escaped Rison text, treating `+` as a space before decoding.
+ *
+ * @param str - The URL-escaped Rison text to decode.
+ * @returns The decoded Rison text.
+ * @example
+ * _unescape('hello+world') // 'hello world'
+ */
 const _unescape = (str: string): string =>
   decodeURIComponent(str.replace(/\+/g, '%20'))
 
