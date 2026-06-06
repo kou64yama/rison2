@@ -14,6 +14,7 @@
   ],
   "scripts": {
     "prepare": "husky",
+    "bench": "vitest bench --run",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "test": "vitest",

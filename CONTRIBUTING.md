@@ -41,6 +41,12 @@ We recommend using [mise](https://mise.jdx.dev/) or [nvm](https://github.com/nvm
   ```bash
   npm run test
   ```
+- **Benchmarking**: Run the focused performance benchmarks with Vitest.
+  See [Lexer Token Matching Performance](docs/lexer-performance.md) for the
+  methodology and current findings.
+  ```bash
+  npm run bench
+  ```
 - **Building**: We use [unbuild](https://github.com/unjs/unbuild) to create the distribution files.
   ```bash
   npm run build
