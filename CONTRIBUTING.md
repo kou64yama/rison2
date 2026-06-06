@@ -42,9 +42,8 @@ We recommend using [mise](https://mise.jdx.dev/) or [nvm](https://github.com/nvm
   npm run test
   ```
 - **Benchmarking**: Run the focused performance benchmarks with Vitest.
-  See [Lexer Token Matching Performance](docs/lexer-performance.md) and
-  [Rison Implementation Performance Comparison](docs/rison-comparison.md) for
-  benchmark methodology and limitations.
+  See the [comparison benchmark documentation](docs/rison-comparison.md) for
+  its methodology and limitations.
   ```bash
   npm run bench
   ```
