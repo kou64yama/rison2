@@ -124,8 +124,12 @@ describe('RISON.stringify', () => {
     expect(RISON.stringify({ foo: undefined })).toBe('()')
   })
 
-  it('ignores undefined in the array', () => {
+  it('represents undefined in the array as null', () => {
     expect(RISON.stringify([undefined])).toBe('!(!n)')
+  })
+
+  it('ignores holes in sparse arrays', () => {
+    expect(RISON.stringify(Array(1))).toBe('!()')
   })
 })
 
