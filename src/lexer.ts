@@ -13,70 +13,11 @@ import {
   type TokenKind
 } from './token'
 
-type Rule<T extends TokenKind> = (
-  source: string,
-  pos: number
-) => Token<T> | null
-
-const rules = {
-  quote: (): Rule<typeof STRING> => (source, pos) => {
-    if (!source.startsWith("'", pos)) return null
-
-    let i = pos
-    while (true) {
-      if (source.length <= ++i) {
-        throw new SyntaxError('Unexpected end of Rison input')
-      }
-      switch (source[i]) {
-        case '!':
-          // In a quoted string, `!` escapes the following character.
-          i++
-          continue
-        case "'":
-          return {
-            kind: STRING,
-            value: source.slice(pos, i + 1),
-            position: pos
-          }
-      }
-    }
-  },
-  string:
-    <T extends TokenKind>(kind: T): Rule<T> =>
-    (source, pos) =>
-      source.startsWith(kind, pos)
-        ? { kind, value: kind, position: pos }
-        : null,
-  regexp: <T extends TokenKind>(kind: T, reg: RegExp): Rule<T> => {
-    const sticky = new RegExp(
-      reg.source,
-      reg.sticky ? reg.flags : `${reg.flags}y`
-    )
-
-    return (source, pos) => {
-      sticky.lastIndex = pos
-      const match = sticky.exec(source)
-      return match != null ? { kind, value: match[0], position: pos } : null
-    }
-  }
-}
-
-const RULES: Array<Rule<TokenKind>> = [
-  rules.quote(),
-  rules.string(OBJECT_START),
-  rules.string(ARRAY_START),
-  rules.string(OBJECT_ARRAY_END),
-  rules.string(NULL),
-  rules.string(TRUE),
-  rules.string(FALSE),
-  rules.string(COLON),
-  rules.string(COMMA),
-  // A bare identifier cannot start with a digit or `-`; all characters exclude
-  // the ASCII space, quote, and Rison reserved punctuation.
-  rules.regexp(STRING, /[^0-9- '!:(),*@$][^ '!:(),*@$]*/),
-  // Numbers use a zero or non-zero-leading integer with optional fraction and exponent.
-  rules.regexp(NUMBER, /-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/)
-]
+// A bare identifier cannot start with a digit or `-`; all characters exclude
+// the ASCII space, quote, and Rison reserved punctuation.
+const STRING_REGEXP = /[^0-9- '!:(),*@$][^ '!:(),*@$]*/y
+// Numbers use a zero or non-zero-leading integer with optional fraction and exponent.
+const NUMBER_REGEXP = /-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/y
 
 /**
  * Tokenizes a Rison source string while tracking the current position.
@@ -118,19 +59,72 @@ export class Lexer {
   public nextToken(): Token<TokenKind> | null {
     if (this.#pos >= this.#source.length) return null
 
-    for (const rule of RULES) {
-      const token = rule(this.#source, this.#pos)
-      if (token !== null) {
-        this.#pos += token.value.length
-        return token
-      }
+    const current = this.#source.charAt(this.#pos)
+    switch (current) {
+      case "'":
+        return this.#readQuotedString()
+      case '(':
+        return this.#createToken(OBJECT_START)
+      case ')':
+        return this.#createToken(OBJECT_ARRAY_END)
+      case ':':
+        return this.#createToken(COLON)
+      case ',':
+        return this.#createToken(COMMA)
+      case '!':
+        switch (this.#source[this.#pos + 1]) {
+          case '(':
+            return this.#createToken(ARRAY_START)
+          case 'n':
+            return this.#createToken(NULL)
+          case 't':
+            return this.#createToken(TRUE)
+          case 'f':
+            return this.#createToken(FALSE)
+        }
     }
+
+    const numberStart = current === '-' || (current >= '0' && current <= '9')
+    const token = numberStart
+      ? this.#readRegexp(NUMBER, NUMBER_REGEXP)
+      : this.#readRegexp(STRING, STRING_REGEXP)
+    if (token !== null) return token
 
     throw new SyntaxError(
       `Unexpected token ${this.#source[this.#pos]} in Rison at position ${
         this.#pos
       }`
     )
+  }
+
+  #readRegexp<T extends TokenKind>(kind: T, regexp: RegExp): Token<T> | null {
+    regexp.lastIndex = this.#pos
+    const match = regexp.exec(this.#source)
+    return match === null ? null : this.#createToken(kind, match[0])
+  }
+
+  #createToken<T extends TokenKind>(kind: T, value: string = kind): Token<T> {
+    const token = { kind, value, position: this.#pos }
+    this.#pos += value.length
+    return token
+  }
+
+  #readQuotedString(): Token<typeof STRING> {
+    const start = this.#pos
+    let end = start
+    while (true) {
+      if (this.#source.length <= ++end) {
+        throw new SyntaxError('Unexpected end of Rison input')
+      }
+      switch (this.#source[end]) {
+        case '!':
+          // In a quoted string, `!` escapes the following character.
+          end++
+          continue
+        case "'":
+          return this.#createToken(STRING, this.#source.slice(start, end + 1))
+      }
+    }
   }
 
   /**
