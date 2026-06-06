@@ -24,4 +24,5 @@ export type TokenKind =
 export interface Token<T extends TokenKind = TokenKind> {
   kind: T
   value: string
+  position: number
 }
