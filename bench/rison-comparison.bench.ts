@@ -1,8 +1,6 @@
 import { deepStrictEqual } from 'node:assert'
-
-import * as rison from 'rison'
+import rison from 'rison'
 import { bench, describe } from 'vitest'
-
 import { RISON } from '../src/rison'
 
 const BENCHMARK_OPTIONS = {
@@ -81,8 +79,20 @@ const benchmarkFixtures = [
 })
 
 describe.each(benchmarkFixtures)('RISON stringify: $name', (fixture) => {
-  bench('rison2', () => RISON.stringify(fixture.value), BENCHMARK_OPTIONS)
-  bench('rison', () => rison.encode(fixture.value), BENCHMARK_OPTIONS)
+  bench(
+    'rison2',
+    () => {
+      RISON.stringify(fixture.value)
+    },
+    BENCHMARK_OPTIONS
+  )
+  bench(
+    'rison',
+    () => {
+      rison.encode(fixture.value)
+    },
+    BENCHMARK_OPTIONS
+  )
 })
 
 describe.each(benchmarkFixtures)('RISON parse: $name', (fixture) => {

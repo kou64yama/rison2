@@ -1,5 +1,4 @@
 import { bench, describe } from 'vitest'
-
 import { Lexer } from '../src/lexer'
 import { Stringifier } from '../src/stringifier'
 
@@ -118,13 +117,17 @@ const largeObject = Object.fromEntries(
 describe('Stringifier collection joining', () => {
   bench(
     `array: ${collectionSize} elements`,
-    () => stringifier.array(largeArray),
+    () => {
+      stringifier.array(largeArray)
+    },
     BENCHMARK_OPTIONS
   )
 
   bench(
     `object: ${collectionSize} properties`,
-    () => stringifier.object(largeObject),
+    () => {
+      stringifier.object(largeObject)
+    },
     BENCHMARK_OPTIONS
   )
 })

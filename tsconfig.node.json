@@ -4,5 +4,5 @@
     "composite": true
   },
   "include": ["**/*", "**/.*"],
-  "exclude": ["src"]
+  "exclude": ["src", "bench"]
 }
