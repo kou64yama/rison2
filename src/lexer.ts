@@ -24,6 +24,8 @@ const NUMBER_REGEXP = /-?([1-9][0-9]*|[0-9])(\.[0-9]+)?(e-?[0-9]+)?/y
  */
 export class Lexer {
   #pos = 0
+  #quotedStringHasEscape = false
+  #quotedStringToken: Token<typeof STRING> | null = null
   #source: string
 
   /**
@@ -47,6 +49,17 @@ export class Lexer {
    */
   public length(): number {
     return this.#source.length
+  }
+
+  /**
+   * Reports whether a quoted string token contained an escape marker.
+   *
+   * @param token - A token returned by this lexer.
+   * @returns Whether the token is the most recently read quoted string and
+   * contains an escape marker.
+   */
+  public quotedStringHasEscape(token: Token): boolean {
+    return token === this.#quotedStringToken && this.#quotedStringHasEscape
   }
 
   /**
@@ -112,6 +125,7 @@ export class Lexer {
   #readQuotedString(): Token<typeof STRING> {
     const start = this.#pos
     let end = start
+    let hasEscape = false
     while (true) {
       if (this.#source.length <= ++end) {
         throw new SyntaxError('Unexpected end of Rison input')
@@ -119,10 +133,18 @@ export class Lexer {
       switch (this.#source[end]) {
         case '!':
           // In a quoted string, `!` escapes the following character.
+          hasEscape = true
           end++
           continue
-        case "'":
-          return this.#createToken(STRING, this.#source.slice(start, end + 1))
+        case "'": {
+          const token = this.#createToken(
+            STRING,
+            this.#source.slice(start, end + 1)
+          )
+          this.#quotedStringToken = token
+          this.#quotedStringHasEscape = hasEscape
+          return token
+        }
       }
     }
   }

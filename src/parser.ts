@@ -66,10 +66,21 @@ export class Parser {
   }
 
   private asString(token: Token): string {
-    // Remove Rison's escape marker: `!!` represents `!`, and `!'` represents `'`.
-    return token.value[0] === "'"
-      ? token.value.replace(/!./g, (c) => c[1] as string).slice(1, -1)
-      : token.value
+    if (token.value[0] !== "'") return token.value
+    if (!this.#lexer.quotedStringHasEscape(token)) {
+      return token.value.slice(1, -1)
+    }
+
+    const end = token.value.length - 1
+    let decoded = ''
+    let segmentStart = 1
+    for (let index = 1; index < end; index++) {
+      if (token.value[index] !== '!') continue
+      decoded += token.value.slice(segmentStart, index)
+      decoded += token.value[++index]
+      segmentStart = index + 1
+    }
+    return decoded + token.value.slice(segmentStart, end)
   }
 
   private readAsObject(): Record<string, unknown> {

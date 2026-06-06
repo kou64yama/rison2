@@ -85,11 +85,24 @@ describe('Lexer.nextToken', () => {
   it.each([
     "'",
     "'escaped!'",
-    "'trailing!"
+    "'trailing!",
+    "'こんにちは!"
   ])('preserves unterminated quote errors for %j', (source) => {
     expect(() => new Lexer(source).nextToken()).toThrowError(
       'Unexpected end of Rison input'
     )
+  })
+
+  it.each([
+    ["'hello world'", false],
+    ["'hello!! !'world'", true],
+    ['hello', false]
+  ])('records whether %j contains quoted escapes', (source, expected) => {
+    const lexer = new Lexer(source)
+    const token = lexer.nextToken()
+
+    if (token === null) throw new Error('Expected a token')
+    expect(lexer.quotedStringHasEscape(token)).toBe(expected)
   })
 
   it('tracks positions across every fixed-token branch', () => {
