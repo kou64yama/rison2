@@ -82,6 +82,20 @@ describe('RISON.parse', () => {
   it.each(syntaxErrors)('throws SyntaxError when it given %j', (input) => {
     expect(() => RISON.parse(input)).toThrow(SyntaxError)
   })
+
+  it.each([
+    ['hello,world', 'Unexpected token , in Rison at position 5'],
+    ['!tinvalid', 'Unexpected token i in Rison at position 2'],
+    ["'hello')", 'Unexpected token ) in Rison at position 7']
+  ])('reports the exact invalid token position for %j', (input, message) => {
+    try {
+      RISON.parse(input)
+      throw new Error('Expected RISON.parse to throw')
+    } catch (error) {
+      expect(error).toBeInstanceOf(SyntaxError)
+      expect(error).toHaveProperty('message', message)
+    }
+  })
 })
 
 describe('RISON.stringify', () => {
